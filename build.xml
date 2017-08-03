@@ -4,15 +4,24 @@
     <!--ANT 1.7 is required                                        -->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
+    <property name="src.dir" value="."/>
     <property name="dir.workspace" value="."/>
+    <property name="classes.dir" value="./bin/"/>
     <property name="dir.jarfile" value="${dir.buildfile}"/>
-    <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/icon_android.jar" filesetmanifest="mergewithoutmain">
+    
+    <target name="compile" description="compile the source ">
+        	<javac debug="true" destdir="${classes.dir}" executable="/usr/bin/javac"  verbose="no" encoding="UTF-8" source="1.7" failonerror="true" fork="true" memoryInitialSize="64m" memoryMaximumSize="256m" listfiles="true">
+			<src path="${src.dir}" />
+			<include name="**/*.java" />
+		</javac>
+    </target>
+    <target name="create_run_jar" depends="compile">
+        <jar destfile="${dir.jarfile}/icon_android.jar">
             <manifest>
                 <attribute name="Main-Class" value="com.by.icon.AndroidDrawableFactory"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="${dir.workspace}/bin"/>
+            <fileset dir="${classes.dir}"/>
         </jar>
     </target>
 </project>
